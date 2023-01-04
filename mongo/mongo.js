@@ -1,35 +1,36 @@
 var mongoClient=require("mongodb").MongoClient;
 var setting=require("./settings");
+require("dotenv").config();
 
 //连接数据库
 var connect=function(callback){
-    mongoClient.connect(setting.url,{ useUnifiedTopology: true },function(error,client){
-        if(error) throw error;
-        callback(client);
-    });
+  mongoClient.connect(setting.url,{ useUnifiedTopology: true },function(error,client){
+    if(error) throw error;
+    callback(client);
+  });
 }
 //查找方法
 exports.findAll=function(tablename,data,callback){
-    connect(function(client){
-        var dbbase=client.db(setting.dbname);
-        dbbase.collection(tablename).find(data).toArray(function(err,res){
-            if(err) throw err;
-            callback(res);
-            client.close();
-        });
+  connect(function(client){
+    var dbbase=client.db(setting.dbname);
+    dbbase.collection(tablename).find(data).toArray(function(err,res){
+      if(err) throw err;
+      callback(res);
+      client.close();
     });
+  });
 }
 //增加单条数据
 exports.insertOne=function(tablename,data,callback){
-    connect(function(client){
-        var dbbase=client.db(setting.dbname);
-        dbbase.collection(tablename).insertOne(data,function(err,res){
-            if(err) throw err;
-            console.log(res,'>>>>result')
-            callback(res.result);
-            client.close();
-        });
+  connect(function(client){
+    var dbbase=client.db(setting.dbname);
+    dbbase.collection(tablename).insertOne(data,function(err,res){
+      if(err) throw err;
+      console.log(res,'>>>>result')
+      callback(res.result);
+      client.close();
     });
+  });
 }
 //增加多条数据
 exports.insertMany=function(tablename,data,callback){
@@ -57,10 +58,10 @@ exports.deleteOne=function(tablename,data,callback){
 exports.updateOne=function(tablename,data,set,callback){
     connect(function(client){
         var dbbase=client.db(setting.dbname);
-        dbbase.collection(tablename).updateOne(data,set,function(err,res){
-            if(err) throw err;
-            callback(res);
-            client.close();
+        dbbase.collection(tablename).updateOne(data,{$set:set},function(err,res){
+          if(err) throw err;
+          callback(res);
+          client.close();
         });
     });
 }
