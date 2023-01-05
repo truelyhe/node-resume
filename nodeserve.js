@@ -1,7 +1,7 @@
 let express = require('express')
 //let mongo = require("./mongo/mongo");
 let bodyParser = require('body-parser');
-const { baseInfo } = require("./routes/index");
+const { baseInfo,job } = require("./routes/index");
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -26,13 +26,14 @@ const swaggerOptions = {
         description: "A REST API built with Express and MongoDB. This API provides resume and the context of the characteristic in the resume."
       },
   },
-  apis: ["./routes/baseInfo.js"]
+  apis: ["./routes/index.js"]
 }
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/apiDoc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // / 是一级路径
 app.use('/baseInfo', baseInfo);
+app.use('/job', job);
 
 // 监听端口号
 app.listen(8888,()=>{

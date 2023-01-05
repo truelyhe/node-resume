@@ -2,17 +2,25 @@ let express = require('express');
 let router = express.Router();
 let mongo = require("../mongo/mongo");
 let ObjectId = require('mongodb').ObjectId
-//require("./swagger")
-// 引入mongoose定义的schema table结构
-//let BaseInfo = require('../modules/baseInfo');
+
 // 查询
 router.get('/data', (req, res) => {
   const {
     id
   } = req.query;
-  mongo.findAll("user", {
-    _id: new ObjectId(id)
+  mongo.findAll("job", {
+    resumeId: id
   }, function (result) {
+    res.send({
+      code: 200,
+      data: result
+    })
+  });
+})
+
+// 新增
+router.post('/insetData', (req, res) => {
+  mongo.insertOne("job", req.body, function (result) {
     res.send({
       code: 200,
       data: result
@@ -25,9 +33,9 @@ router.put("/updateData/:id", function (req, res) {
   const id = req.params.id;
   const data = req.body;
   const filter = {
-    _id: ObjectId(id)
+    resumeId: id
   };
-  mongo.updateOne("user", filter, data, function (result) {
+  mongo.updateOne("job", filter, data, function (result) {
     res.send({
       code: 200,
       msg: '修改成功'
