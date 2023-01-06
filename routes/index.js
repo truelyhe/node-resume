@@ -1,9 +1,11 @@
 const baseInfo = require('./baseInfo')
 const job = require('./job')
+const fileController = require('./fileController')
 
 module.exports = {
   baseInfo,
-  job
+  job,
+  fileController
 }
 
 
@@ -16,6 +18,37 @@ module.exports = {
  *     description: 简历-求职岗位
  *   - name: work
  *     description: 简历-工作经验
+ * /baseInfo/allData:
+ *   get:
+ *     tags:
+ *        - baseInfo
+ *     description: 查询全部简历信息
+ *     parameters:
+ *       - name: id
+ *     responses:
+ *       200:
+ *         description: 响应成功
+ *         schema:
+ *           $ref: '#/definitions/Puppy'
+ * /baseInfo/upload:
+ *   post:
+ *     tags:
+ *        - baseInfo
+ *     description: 上传文件
+ *     parameters:
+ *       - name: file
+ *         in: formdata
+ *     responses:
+ *       200:
+ *         description: 响应成功
+ *         schema:
+ *           properties:
+ *             data:
+ *               type: string
+*/
+
+ /**
+ * @swagger
  * /baseInfo/data:
  *   get:
  *     tags:

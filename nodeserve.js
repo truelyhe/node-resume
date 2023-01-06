@@ -1,7 +1,7 @@
 let express = require('express')
 //let mongo = require("./mongo/mongo");
 let bodyParser = require('body-parser');
-const { baseInfo,job } = require("./routes/index");
+const { baseInfo,job,fileController } = require("./routes/index");
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -34,6 +34,7 @@ app.use('/apiDoc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // / 是一级路径
 app.use('/baseInfo', baseInfo);
 app.use('/job', job);
+app.use('/file', fileController);
 
 // 监听端口号
 app.listen(8888,()=>{

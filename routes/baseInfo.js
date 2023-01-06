@@ -35,4 +35,39 @@ router.put("/updateData/:id", function (req, res) {
   });
 });
 
+// 关联查询
+router.get('/allData', (req, res) => {
+  let pipeLine = [
+    {
+      $lookup: {
+        from: 'job',
+        localField: 'resumeId' ,
+        foreignField: 'resumeId',
+        as: 'jobInfo'
+      }
+    }
+  ]
+  mongo.queryAggregateMultiTable("user", pipeLine, function (result) {
+    res.send({
+      code: 200,
+      data: result
+    })
+  });
+})
+
+//修改
+router.put('/:_id',(req,res)=>{
+  const _id=req.params;
+  const {username,password,gender,tel,avatarUrl}=req.body;
+  db
+  .updateOne({_id},{username,password,gender,tel,avatarUrl})
+  .then((data)=>{
+    res.json({
+      code:200,
+      status:0,
+      message:"修改成功" 
+    })
+  })
+})
+
 module.exports = router;

@@ -76,3 +76,15 @@ exports.paging=function(tablename,now,num,sort,callback){
         });
     });
 }
+
+//（多表关联查询）
+exports.queryAggregateMultiTable=function(tablename,pipeLine,callback){
+  connect(function(client){
+      var dbbase=client.db(setting.dbname);
+      dbbase.collection(tablename).aggregate(pipeLine).toArray(function(err,res){
+      if(err) return console.log(err)
+      callback(res);
+      client.close();
+    })
+  });
+}
